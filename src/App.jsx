@@ -14,6 +14,7 @@ import { ScrollPixelParticles } from './components/ui/ScrollPixelParticles';
 import { projectsData } from './data/projectsData';
 import { skillsData } from './data/skillsData';
 import { timelineData } from './data/timelineData';
+import pixelPortrait from './assets/pixel-portrait.png';
 
 const navigation = [
   { label: 'Work', href: '#work' },
@@ -33,67 +34,7 @@ const skillGroups = [
 
 const featuredProjects = projectsData.filter((project) => project.featured).slice(0, 4);
 
-function PixelScene() {
-  return (
-    <svg
-      viewBox="0 0 320 320"
-      role="img"
-      aria-label="Pixel-art scene of a developer working at a computer"
-      className="pixel-art h-full w-full"
-    >
-      <rect width="320" height="320" fill="#a9d8b2" />
-      <rect y="206" width="320" height="114" fill="#759b77" />
-      <rect x="0" y="214" width="44" height="12" fill="#638366" />
-      <rect x="52" y="214" width="30" height="12" fill="#638366" />
-      <rect x="228" y="214" width="38" height="12" fill="#638366" />
-      <rect x="276" y="214" width="44" height="12" fill="#638366" />
 
-      <rect x="242" y="34" width="40" height="40" fill="#f3c75e" />
-      <rect x="250" y="26" width="24" height="8" fill="#f3c75e" />
-      <rect x="234" y="42" width="8" height="24" fill="#f3c75e" />
-      <rect x="282" y="42" width="8" height="24" fill="#f3c75e" />
-
-      <rect x="42" y="66" width="32" height="8" fill="#eaf0d7" />
-      <rect x="50" y="58" width="24" height="8" fill="#eaf0d7" />
-      <rect x="74" y="66" width="24" height="8" fill="#eaf0d7" />
-      <rect x="222" y="102" width="24" height="8" fill="#eaf0d7" />
-      <rect x="230" y="94" width="32" height="8" fill="#eaf0d7" />
-      <rect x="254" y="102" width="16" height="8" fill="#eaf0d7" />
-
-      <rect x="24" y="174" width="16" height="32" fill="#426b4c" />
-      <rect x="16" y="150" width="32" height="32" fill="#426b4c" />
-      <rect x="24" y="134" width="16" height="16" fill="#426b4c" />
-      <rect x="272" y="178" width="16" height="28" fill="#426b4c" />
-      <rect x="264" y="154" width="32" height="32" fill="#426b4c" />
-      <rect x="272" y="138" width="16" height="16" fill="#426b4c" />
-
-      <rect x="116" y="86" width="88" height="16" fill="#24302a" />
-      <rect x="100" y="102" width="120" height="48" fill="#24302a" />
-      <rect x="108" y="150" width="104" height="40" fill="#e6ad7c" />
-      <rect x="100" y="118" width="16" height="40" fill="#24302a" />
-      <rect x="204" y="118" width="16" height="32" fill="#24302a" />
-      <rect x="124" y="126" width="8" height="8" fill="#17211c" />
-      <rect x="180" y="126" width="8" height="8" fill="#17211c" />
-      <rect x="148" y="150" width="24" height="8" fill="#a75e51" />
-      <rect x="140" y="190" width="40" height="16" fill="#e6ad7c" />
-
-      <rect x="96" y="206" width="128" height="72" fill="#315d58" />
-      <rect x="80" y="214" width="16" height="48" fill="#e6ad7c" />
-      <rect x="224" y="214" width="16" height="48" fill="#e6ad7c" />
-      <rect x="112" y="278" width="40" height="20" fill="#263832" />
-      <rect x="168" y="278" width="40" height="20" fill="#263832" />
-
-      <rect x="30" y="258" width="260" height="18" fill="#704d3f" />
-      <rect x="46" y="276" width="14" height="30" fill="#4a3730" />
-      <rect x="260" y="276" width="14" height="30" fill="#4a3730" />
-      <rect x="122" y="224" width="76" height="48" fill="#26343a" />
-      <rect x="130" y="232" width="60" height="32" fill="#dae4c5" />
-      <rect x="150" y="266" width="20" height="6" fill="#c6d3b6" />
-      <rect x="102" y="238" width="12" height="20" fill="#f3c75e" />
-      <rect x="206" y="230" width="10" height="28" fill="#e98462" />
-    </svg>
-  );
-}
 
 export function App() {
   const [isResumeOpen, setIsResumeOpen] = useState(false);
@@ -233,7 +174,11 @@ export function App() {
                   <span>Level: learning</span>
                 </div>
                 <div className="overflow-hidden border-[3px] border-[#20251f] bg-[#a9d8b2]">
-                  <PixelScene />
+                  <img
+                    src={pixelPortrait}
+                    alt="Pixel-art portrait of Shubham working at a computer"
+                    className="pixel-art aspect-square h-full w-full object-cover"
+                  />
                 </div>
                 <div className="mt-3 grid grid-cols-3 gap-2 font-mono text-[8px] font-bold uppercase tracking-wide text-[#e2ead8] sm:text-[9px]">
                   <span className="border border-[#e2ead8]/25 px-2 py-2">[ code ]</span>
