@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ArrowDown,
   ArrowUpRight,
@@ -6,14 +6,22 @@ import {
   GraduationCap,
   MapPin,
   Menu,
-  X
+  X,
+  Volume2,
+  VolumeX,
+  Sparkles
 } from 'lucide-react';
 import { Github as GithubMark } from './components/ui/Icons';
 import { ResumeModal } from './components/ui/ResumeModal';
 import { ScrollPixelParticles } from './components/ui/ScrollPixelParticles';
+import { ProjectCaseStudyModal } from './components/ui/ProjectCaseStudyModal';
+import { RetroTerminal } from './components/ui/RetroTerminal';
+import { MatrixOverlay } from './components/ui/MatrixOverlay';
+import { InteractiveSkillTag } from './components/ui/InteractiveSkillTag';
 import { projectsData } from './data/projectsData';
 import { skillsData } from './data/skillsData';
 import { timelineData } from './data/timelineData';
+import { soundFX } from './utils/soundEffects';
 import pixelPortrait from './assets/pixel-portrait.png';
 
 const navigation = [
@@ -39,8 +47,27 @@ const featuredProjects = projectsData.filter((project) => project.featured).slic
 export function App() {
   const [isResumeOpen, setIsResumeOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [isMatrixActive, setIsMatrixActive] = useState(false);
+  const [isSoundEnabled, setIsSoundEnabled] = useState(soundFX.isEnabled());
+
+  useEffect(() => {
+    return soundFX.subscribe((enabled) => {
+      setIsSoundEnabled(enabled);
+    });
+  }, []);
 
   const closeMenu = () => setIsMenuOpen(false);
+
+  const toggleSound = () => {
+    const next = soundFX.toggle();
+    setIsSoundEnabled(next);
+  };
+
+  const handleOpenProject = (project) => {
+    soundFX.playClick();
+    setSelectedProject(project);
+  };
 
   return (
     <div className="min-h-screen overflow-hidden bg-[#f4f0e4] text-[#20251f]">
@@ -71,13 +98,34 @@ export function App() {
 
           <div className="hidden items-center gap-3 sm:flex">
             <button
-              onClick={() => setIsResumeOpen(true)}
+              onClick={toggleSound}
+              title={isSoundEnabled ? 'Mute 8-bit Audio' : 'Enable 8-bit Audio'}
+              className="border-2 border-[#20251f] bg-white px-3 py-2 font-mono text-[10px] font-bold uppercase shadow-[3px_3px_0_#20251f] hover:bg-[#dce9d3] flex items-center gap-1.5 transition-colors"
+            >
+              {isSoundEnabled ? (
+                <>
+                  <Volume2 size={13} className="text-[#355d48]" />
+                  <span className="hidden lg:inline text-[#355d48]">SFX: ON</span>
+                </>
+              ) : (
+                <>
+                  <VolumeX size={13} className="text-[#ab3d29]" />
+                  <span className="hidden lg:inline text-[#ab3d29]">SFX: OFF</span>
+                </>
+              )}
+            </button>
+            <button
+              onClick={() => {
+                soundFX.playClick();
+                setIsResumeOpen(true);
+              }}
               className="border-2 border-[#20251f] bg-white px-4 py-2.5 font-mono text-[10px] font-bold uppercase shadow-[3px_3px_0_#20251f] hover:bg-[#dce9d3]"
             >
               Open résumé
             </button>
             <a
               href="#contact"
+              onClick={() => soundFX.playClick()}
               className="border-2 border-[#20251f] bg-[#20251f] px-4 py-2.5 font-mono text-[10px] font-bold uppercase text-white shadow-[3px_3px_0_#789478] hover:bg-[#355d48]"
             >
               Let&apos;s talk <ArrowUpRight size={13} className="ml-1 inline" />
@@ -108,15 +156,24 @@ export function App() {
                   <span className="mr-2 text-[#789478]">0{index + 1}</span>{item.label}
                 </a>
               ))}
-              <button
-                onClick={() => {
-                  closeMenu();
-                  setIsResumeOpen(true);
-                }}
-                className="mt-3 self-start py-2 font-mono text-xs font-bold uppercase"
-              >
-                Open résumé
-              </button>
+              <div className="mt-3 flex items-center gap-3">
+                <button
+                  onClick={() => {
+                    closeMenu();
+                    setIsResumeOpen(true);
+                  }}
+                  className="py-2 font-mono text-xs font-bold uppercase"
+                >
+                  Open résumé
+                </button>
+                <button
+                  onClick={toggleSound}
+                  className="border border-[#20251f] bg-white px-2.5 py-1 font-mono text-[10px] font-bold uppercase flex items-center gap-1.5"
+                >
+                  {isSoundEnabled ? <Volume2 size={12} /> : <VolumeX size={12} />}
+                  <span>{isSoundEnabled ? 'SFX ON' : 'SFX MUTED'}</span>
+                </button>
+              </div>
             </div>
           </nav>
         )}
@@ -221,7 +278,11 @@ export function App() {
 
             <div className="grid gap-5 md:grid-cols-2">
               {featuredProjects.map((project, index) => (
-                <article key={project.id} className="pixel-panel flex flex-col border-[3px] border-[#20251f] bg-white">
+                <article
+                  key={project.id}
+                  onClick={() => handleOpenProject(project)}
+                  className="pixel-panel flex flex-col border-[3px] border-[#20251f] bg-white cursor-pointer transition-transform hover:-translate-y-1 group"
+                >
                   <div
                     className="relative flex min-h-40 items-start justify-between overflow-hidden border-b-[3px] border-[#20251f] p-4 sm:min-h-48 sm:p-5"
                     style={{ backgroundColor: `${project.accentColor}26` }}
@@ -234,7 +295,7 @@ export function App() {
                     </span>
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div
-                        className="flex h-20 w-20 items-center justify-center border-[5px] border-[#20251f] font-mono text-3xl font-black text-[#20251f] shadow-[7px_7px_0_#20251f] sm:h-24 sm:w-24"
+                        className="flex h-20 w-20 items-center justify-center border-[5px] border-[#20251f] font-mono text-3xl font-black text-[#20251f] shadow-[7px_7px_0_#20251f] transition-transform group-hover:scale-105 sm:h-24 sm:w-24"
                         style={{ backgroundColor: project.accentColor }}
                         aria-hidden="true"
                       >
@@ -247,13 +308,19 @@ export function App() {
                   <div className="flex flex-1 flex-col p-5 sm:p-6">
                     <div className="flex items-start justify-between gap-4">
                       <div>
-                        <h3 className="font-mono text-lg font-black uppercase tracking-tight">{project.title}</h3>
+                        <h3 className="font-mono text-lg font-black uppercase tracking-tight group-hover:text-[#355d48] transition-colors">
+                          {project.title}
+                        </h3>
                         <p className="mt-1 font-mono text-[9px] uppercase tracking-wide text-[#6a7066]">{project.subtitle}</p>
                       </div>
                       <a
                         href={project.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          soundFX.playClick();
+                        }}
                         aria-label={`View ${project.title} on GitHub`}
                         className="border-2 border-[#20251f] bg-[#f4f0e4] p-2 shadow-[2px_2px_0_#20251f] hover:bg-[#dce9d3]"
                       >
@@ -267,6 +334,16 @@ export function App() {
                           {technology}
                         </span>
                       ))}
+                    </div>
+
+                    {/* Case Study Callout Bar */}
+                    <div className="mt-6 pt-4 border-t-2 border-dashed border-[#b8bbae] flex items-center justify-between">
+                      <span className="inline-flex items-center gap-1.5 border-2 border-[#20251f] bg-[#f3c75e] px-3 py-1.5 font-mono text-[9px] font-black uppercase shadow-[2px_2px_0_#20251f] group-hover:bg-[#e9b94e] transition-colors">
+                        <Sparkles size={11} /> Case Study &amp; Architecture
+                      </span>
+                      <span className="font-mono text-[8px] uppercase font-bold text-[#6a7066]">
+                        Inspect Bottlenecks →
+                      </span>
                     </div>
                   </div>
                 </article>
@@ -323,11 +400,16 @@ export function App() {
 
         <section id="skills" className="scroll-mt-24 border-b-[3px] border-[#20251f] py-16 sm:py-24">
           <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
-            <div className="mb-10">
-              <p className="mb-3 font-mono text-[9px] font-black uppercase tracking-[0.2em] text-[#648269]">03 / Inventory</p>
-              <h2 className="font-mono text-2xl font-black uppercase leading-tight tracking-[-0.07em] sm:text-4xl">Tools in my backpack.</h2>
+            <div className="mb-10 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+              <div>
+                <p className="mb-3 font-mono text-[9px] font-black uppercase tracking-[0.2em] text-[#648269]">03 / Inventory</p>
+                <h2 className="font-mono text-2xl font-black uppercase leading-tight tracking-[-0.07em] sm:text-4xl">Tools in my backpack.</h2>
+              </div>
+              <p className="max-w-md font-mono text-[9px] uppercase tracking-wide text-[#647060]">
+                Interactive RPG inventory: hover for live EXP progression, click to inspect practical applications &amp; focus highlights.
+              </p>
             </div>
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
               {skillGroups.map((group) => {
                 const skills = skillsData.filter((skill) => skill.category === group.category);
                 if (!skills.length) return null;
@@ -335,12 +417,9 @@ export function App() {
                 return (
                   <div key={group.category} className="border-[3px] border-[#20251f] bg-white p-4 shadow-[4px_4px_0_#20251f]">
                     <h3 className="mb-4 border-b-2 border-[#20251f] pb-3 font-mono text-[9px] font-black uppercase text-[#5b705c]">{group.label}</h3>
-                    <ul className="space-y-2.5">
+                    <ul className="space-y-2">
                       {skills.map((skill) => (
-                        <li key={skill.name} className="flex items-center gap-2 font-mono text-[10px] font-bold uppercase">
-                          <span className="h-2 w-2 border border-[#20251f] bg-[#f3c75e]" />
-                          {skill.name}
-                        </li>
+                        <InteractiveSkillTag key={skill.name} skill={skill} />
                       ))}
                     </ul>
                   </div>
@@ -386,7 +465,7 @@ export function App() {
               </div>
               <div className="flex flex-wrap gap-3">
                 <a
-                  href="https://linkedin.com/in/shubhamthakur-dev"
+                  href="https://www.linkedin.com/in/shubham-thakur-61a82737b/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 border-2 border-[#20251f] bg-[#f3c75e] px-4 py-3 font-mono text-[9px] font-black uppercase text-[#20251f] shadow-[4px_4px_0_#20251f] hover:bg-[#e9b94e]"
@@ -394,7 +473,7 @@ export function App() {
                   Connect on LinkedIn <ArrowUpRight size={13} />
                 </a>
                 <a
-                  href="https://github.com/shubhamthakur-dev"
+                  href="https://github.com/shubham716259"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 border-2 border-white bg-transparent px-4 py-3 font-mono text-[9px] font-black uppercase text-white hover:bg-white hover:text-[#20251f]"
@@ -413,6 +492,29 @@ export function App() {
       </main>
 
       <ResumeModal isOpen={isResumeOpen} onClose={() => setIsResumeOpen(false)} />
+
+      {/* Retro Project Case Study Modal */}
+      <ProjectCaseStudyModal
+        project={selectedProject}
+        isOpen={!!selectedProject}
+        onClose={() => setSelectedProject(null)}
+      />
+
+      {/* Floating Retro Terminal CLI Widget */}
+      <RetroTerminal
+        projects={projectsData}
+        skills={skillsData}
+        onSelectProject={(project) => setSelectedProject(project)}
+        onOpenResume={() => setIsResumeOpen(true)}
+        onToggleMatrix={() => setIsMatrixActive((prev) => !prev)}
+        isMatrixActive={isMatrixActive}
+      />
+
+      {/* Retro Green Digital Rain Matrix Overlay */}
+      <MatrixOverlay
+        isActive={isMatrixActive}
+        onClose={() => setIsMatrixActive(false)}
+      />
     </div>
   );
 }

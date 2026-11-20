@@ -170,7 +170,7 @@ export function ContactSection({ onOpenResume, onShowToast }) {
             {/* Social Network Channels */}
             <div className="glass-panel p-6 rounded-3xl border border-white/10 flex items-center justify-around">
               <a
-                href="https://github.com/shubhamthakur-dev"
+                href="https://github.com/shubham716259"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex flex-col items-center gap-1.5 text-slate-400 hover:text-white transition-colors group"
@@ -182,7 +182,7 @@ export function ContactSection({ onOpenResume, onShowToast }) {
               </a>
 
               <a
-                href="https://linkedin.com/in/shubhamthakur-dev"
+                href="https://www.linkedin.com/in/shubham-thakur-61a82737b/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex flex-col items-center gap-1.5 text-slate-400 hover:text-white transition-colors group"

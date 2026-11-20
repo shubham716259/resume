@@ -68,7 +68,7 @@ export function Footer() {
             </h4>
             <div className="flex items-center gap-3">
               <a
-                href="https://github.com/shubhamthakur-dev"
+                href="https://github.com/shubham716259"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-9 h-9 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-300 hover:text-white hover:border-cyan-400 transition-colors"
@@ -77,7 +77,7 @@ export function Footer() {
                 <Github size={18} />
               </a>
               <a
-                href="https://linkedin.com/in/shubhamthakur-dev"
+                href="https://www.linkedin.com/in/shubham-thakur-61a82737b/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-9 h-9 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-300 hover:text-white hover:border-purple-400 transition-colors"

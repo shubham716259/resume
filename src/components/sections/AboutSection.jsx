@@ -137,7 +137,7 @@ export function AboutSection() {
               {/* Social Profile Quick Links */}
               <div className="mt-6 pt-4 border-t border-slate-800 flex items-center justify-center gap-3">
                 <a
-                  href="https://github.com/shubhamthakur-dev"
+                  href="https://github.com/shubham716259"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-400 text-slate-300 hover:text-white transition-colors flex items-center gap-2 text-xs font-mono"
@@ -145,7 +145,7 @@ export function AboutSection() {
                   <Github size={16} /> GitHub
                 </a>
                 <a
-                  href="https://linkedin.com/in/shubhamthakur-dev"
+                  href="https://www.linkedin.com/in/shubham-thakur-61a82737b/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-purple-400 text-slate-300 hover:text-white transition-colors flex items-center gap-2 text-xs font-mono"
